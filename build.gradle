@@ -8,7 +8,7 @@ buildscript {
         gsonVersion = '2.8.6'
         hiltVersion = '2.33-beta'
         junitVersion = '4.12'
-        kotlin_version = '1.5.0'
+        kotlin_version = '1.4.30'
         lifecycleVersion = '2.2.0'
         navigationVersion = '2.3.5'
         okhttpLoggingVersion = '4.7.2'
@@ -38,7 +38,6 @@ allprojects {
     repositories {
         google()
         mavenCentral()
-        jcenter() // Warning: this repository is going to shut down soon
     }
 }
 
