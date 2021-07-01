@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.jack.reddit.adapter
+package com.jack.reddit.adapters
 
 import android.text.method.LinkMovementMethod
 import android.widget.ImageView

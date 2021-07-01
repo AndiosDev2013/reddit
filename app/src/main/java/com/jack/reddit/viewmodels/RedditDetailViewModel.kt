@@ -19,13 +19,16 @@ package com.jack.reddit.viewmodels
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
-import com.jack.reddit.RebbitDetailFragment
+import androidx.lifecycle.viewModelScope
+import com.jack.reddit.BuildConfig
+import com.jack.reddit.RedditDetailFragment
 import com.jack.reddit.data.RedditRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 /**
- * The ViewModel used in [RebbitDetailFragment].
+ * The ViewModel used in [RedditDetailFragment].
  */
 @HiltViewModel
 class RedditDetailViewModel @Inject constructor(
@@ -33,11 +36,10 @@ class RedditDetailViewModel @Inject constructor(
     redditRepository: RedditRepository
 ) : ViewModel() {
 
-    val id: String = savedStateHandle.get<String>(ID)!!
-
-    val reddit = redditRepository.get(id).asLiveData()
+    val redditId: String = savedStateHandle.get<String>(REDDIT_ID)!!
+    val reddit = redditRepository.getReddit(redditId).asLiveData()
 
     companion object {
-        private const val ID = "id"
+        private const val REDDIT_ID = "redditId"
     }
 }

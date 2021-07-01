@@ -18,22 +18,23 @@ package com.jack.reddit
 
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.observe
-import com.jack.reddit.adapter.RedditAdapter
+import androidx.lifecycle.lifecycleScope
+import com.jack.reddit.adapters.RedditListAdapter
 import com.jack.reddit.databinding.FragmentRedditListBinding
 import com.jack.reddit.viewmodels.RedditListViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class RedditListFragment : Fragment() {
-
+    val adapter = RedditListAdapter()
+    private var getListJob: Job? = null
     private val viewModel: RedditListViewModel by viewModels()
 
     override fun onCreateView(
@@ -44,41 +45,20 @@ class RedditListFragment : Fragment() {
         val binding = FragmentRedditListBinding.inflate(inflater, container, false)
         context ?: return binding.root
 
-        val adapter = RedditAdapter()
-        binding.plantList.adapter = adapter
-        subscribeUi(adapter)
+        binding.redditList.adapter = adapter
+        getList()
 
-        setHasOptionsMenu(true)
         return binding.root
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        //inflater.inflate(R.menu.menu_plant_list, menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-//            R.id.filter_zone -> {
-//                updateData()
-//                true
-//            }
-            else -> super.onOptionsItemSelected(item)
-        }
-    }
-
-    private fun subscribeUi(adapter: RedditAdapter) {
-        viewModel.redditList.observe(viewLifecycleOwner) { plants ->
-            adapter.submitList(plants)
-        }
-    }
-
-    private fun updateData() {
-        with(viewModel) {
-            if (isFiltered()) {
-                clearGrowZoneNumber()
-            } else {
-                setGrowZoneNumber(9)
+    private fun getList() {
+        // Make sure we cancel the previous job before creating a new one
+        getListJob?.cancel()
+        getListJob = lifecycleScope.launch {
+            viewModel.getList().collectLatest {
+                adapter.submitData(it)
             }
         }
     }
+
 }

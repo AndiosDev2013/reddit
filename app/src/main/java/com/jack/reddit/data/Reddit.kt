@@ -19,29 +19,35 @@ package com.jack.reddit.data
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import java.util.Calendar
-import java.util.Calendar.DAY_OF_YEAR
+import com.google.gson.annotations.SerializedName
 
-@Entity(tableName = "reddit")
+@Entity(tableName = "reddits")
 data class Reddit(
+    @field:SerializedName("subreddit_id")
     @PrimaryKey
+    @ColumnInfo(name = "id")
     val redditId: String,
 
+    @field:SerializedName("approved_at_utc")
     val approved_at_utc: String = "",
+    @field:SerializedName("subreddit")
     val subreddit: String = "",
+    @field:SerializedName("selftext")
     val selftext: String = "",
+    @field:SerializedName("title")
     val title: String = "",
+    @field:SerializedName("name")
     val name: String = "",
+    @field:SerializedName("upvote_ratio")
     val upvote_ratio: Double = 0.0,
+    @field:SerializedName("ups")
     val ups: Int = 0,
+    @field:SerializedName("total_awards_received")
     val total_awards_received: Int = 0,
+    @field:SerializedName("selftext_html")
     val selftext_html: String = "",
+    @field:SerializedName("permalink")
     val permalink: String = ""
 ) {
-
-    /**
-     * Determines if the plant should be watered.  Returns true if [since]'s date > date of last
-     * watering + watering Interval; false otherwise.
-     */
     override fun toString() = name
 }

@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.sunflower.di
+package com.jack.reddit.di
 
-import com.jack.reddit.api.APIService
+import com.jack.reddit.api.ApiService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -29,7 +29,7 @@ class NetworkModule {
 
     @Singleton
     @Provides
-    fun provideAPIService(): APIService {
-        return APIService.create()
+    fun provideAPIService(): ApiService {
+        return ApiService.create()
     }
 }

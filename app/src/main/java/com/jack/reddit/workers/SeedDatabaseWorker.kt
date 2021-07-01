@@ -23,10 +23,10 @@ import androidx.work.WorkerParameters
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.google.gson.stream.JsonReader
-import com.jack.reddit.REDIT_DATA_FILENAME
-import com.jack.reddit.data.AppDatabase
-import com.jack.reddit.data.Reddit
+import com.jack.reddit.DATA_FILENAME
 import kotlinx.coroutines.coroutineScope
+import com.jack.reddit.data.Reddit
+import com.jack.reddit.data.AppDatabase
 
 class SeedDatabaseWorker(
     context: Context,
@@ -34,13 +34,13 @@ class SeedDatabaseWorker(
 ) : CoroutineWorker(context, workerParams) {
     override suspend fun doWork(): Result = coroutineScope {
         try {
-            applicationContext.assets.open(REDIT_DATA_FILENAME).use { inputStream ->
+            applicationContext.assets.open(KEY_FILENAME).use { inputStream ->
                 JsonReader(inputStream.reader()).use { jsonReader ->
-                    val plantType = object : TypeToken<List<Reddit>>() {}.type
-                    val plantList: List<Reddit> = Gson().fromJson(jsonReader, plantType)
+                    val redditsType = object : TypeToken<List<Reddit>>() {}.type
+                    val redditList: List<Reddit> = Gson().fromJson(jsonReader, redditsType)
 
                     val database = AppDatabase.getInstance(applicationContext)
-                    database.plantDao().insertAll(plantList)
+                    database.redditDao().insertAll(redditList)
 
                     Result.success()
                 }
@@ -53,5 +53,6 @@ class SeedDatabaseWorker(
 
     companion object {
         private const val TAG = "SeedDatabaseWorker"
+        const val KEY_FILENAME = "DATA_FILENAME"
     }
 }

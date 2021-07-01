@@ -14,27 +14,25 @@
  * limitations under the License.
  */
 
-package com.jack.reddit.viewmodels
+package com.jack.reddit.data
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import androidx.paging.cachedIn
-import com.jack.reddit.data.ApiRepository
-import com.jack.reddit.data.Reddit
-import dagger.hilt.android.lifecycle.HiltViewModel
+import com.jack.reddit.api.ApiService
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-@HiltViewModel
-class RedditListViewModel @Inject constructor(
-    private val repository: ApiRepository
-) : ViewModel() {
-    private var results: Flow<PagingData<Reddit>>? = null
+class ApiRepository @Inject constructor(private val service: ApiService) {
 
-    fun getList(): Flow<PagingData<Reddit>> {
-        val newResult: Flow<PagingData<Reddit>> = repository.getResultStream().cachedIn(viewModelScope)
-        results = newResult
-        return newResult
+    fun getResultStream(): Flow<PagingData<Reddit>> {
+        return Pager(
+            config = PagingConfig(enablePlaceholders = false, pageSize = NETWORK_PAGE_SIZE),
+            pagingSourceFactory = { ApiPagingSource(service) }
+        ).flow
+    }
+
+    companion object {
+        private const val NETWORK_PAGE_SIZE = 25
     }
 }

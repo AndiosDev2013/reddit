@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Google LLC
+ * Copyright 2020 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,16 +14,23 @@
  * limitations under the License.
  */
 
-package com.jack.reddit.adapters
+package com.jack.reddit.data
 
-import android.view.View
-import androidx.databinding.BindingAdapter
+import com.google.gson.annotations.SerializedName
 
-@BindingAdapter("isGone")
-fun bindIsGone(view: View, isGone: Boolean) {
-    view.visibility = if (isGone) {
-        View.GONE
-    } else {
-        View.VISIBLE
-    }
-}
+data class ListData(
+    @field:SerializedName("after")
+    val after: String,
+
+    @field:SerializedName("dist")
+    val dist: Int,
+
+    @field:SerializedName("modhash")
+    val modhash: String,
+
+    @field:SerializedName("geo_filter")
+    val geo_filter: String,
+
+    @field:SerializedName("children")
+    val children: List<ChildrenData>
+)

@@ -16,22 +16,23 @@
 
 package com.jack.reddit.api
 
-import com.jack.reddit.api.response.RedditResponse
+import com.jack.reddit.data.ApiResponse
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import okhttp3.logging.HttpLoggingInterceptor.Level
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.POST
+import retrofit2.http.GET
 
 /**
- * Used to connect to the Unsplash API to fetch photos
+ * Used to connect to the API to fetch photos
  */
-interface APIService {
+interface ApiService {
+
     companion object {
         private const val BASE_URL = "https://www.reddit.com/"
 
-        fun create(): APIService {
+        fun create(): ApiService {
             val logger = HttpLoggingInterceptor().apply { level = Level.BASIC }
 
             val client = OkHttpClient.Builder()
@@ -43,11 +44,10 @@ interface APIService {
                 .client(client)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
-                .create(APIService::class.java)
+                .create(ApiService::class.java)
         }
     }
 
-    @POST("r/Android/hot.json")
-    suspend fun hotList(): RedditResponse
-
+    @GET("r/Android/hot.json")
+    suspend fun getHot(): ApiResponse
 }

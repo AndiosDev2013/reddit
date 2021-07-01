@@ -23,16 +23,16 @@ import androidx.room.Query
 import kotlinx.coroutines.flow.Flow
 
 /**
- * The Data Access Object for the Plant class.
+ * The Data Access Object for the Reddit class.
  */
 @Dao
 interface RedditDao {
-    @Query("SELECT * FROM reddit ORDER BY name")
+    @Query("SELECT * FROM reddits ORDER BY name")
     fun getReddits(): Flow<List<Reddit>>
 
-    @Query("SELECT * FROM reddit WHERE redditId = :subreddit_id")
-    fun getReddit(subreddit_id: String): Flow<Reddit>
+    @Query("SELECT * FROM reddits WHERE id = :redditId")
+    fun getReddit(redditId: String): Flow<Reddit>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAll(plants: List<Reddit>)
+    suspend fun insertAll(reddits: List<Reddit>)
 }

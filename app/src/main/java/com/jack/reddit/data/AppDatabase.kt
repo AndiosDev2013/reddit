@@ -24,8 +24,11 @@ import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
+import androidx.work.workDataOf
 import com.jack.reddit.DATABASE_NAME
+import com.jack.reddit.DATA_FILENAME
 import com.jack.reddit.workers.SeedDatabaseWorker
+import com.jack.reddit.workers.SeedDatabaseWorker.Companion.KEY_FILENAME
 
 /**
  * The Room database for this app
@@ -33,7 +36,7 @@ import com.jack.reddit.workers.SeedDatabaseWorker
 @Database(entities = [Reddit::class], version = 1, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
-    abstract fun plantDao(): RedditDao
+    abstract fun redditDao(): RedditDao
 
     companion object {
 
@@ -47,18 +50,20 @@ abstract class AppDatabase : RoomDatabase() {
         }
 
         // Create and pre-populate the database. See this article for more details:
-        // https://medium.com/google-developers/7-pro-tips-for-room-fbadea4bfbd1#4785
         private fun buildDatabase(context: Context): AppDatabase {
-            val builder = Room.databaseBuilder(context, AppDatabase::class.java, DATABASE_NAME)
-            builder.addCallback(object : RoomDatabase.Callback() {
-                override fun onCreate(db: SupportSQLiteDatabase) {
-                    super.onCreate(db)
-                    val request = OneTimeWorkRequestBuilder<SeedDatabaseWorker>().build()
-                    WorkManager.getInstance(context).enqueue(request)
-                }
-            })
-
-            return builder.build()
+            return Room.databaseBuilder(context, AppDatabase::class.java, DATABASE_NAME)
+                .addCallback(
+                    object : RoomDatabase.Callback() {
+                        override fun onCreate(db: SupportSQLiteDatabase) {
+                            super.onCreate(db)
+                            val request = OneTimeWorkRequestBuilder<SeedDatabaseWorker>()
+                                    .setInputData(workDataOf(KEY_FILENAME to DATA_FILENAME))
+                                    .build()
+                            WorkManager.getInstance(context).enqueue(request)
+                        }
+                    }
+                )
+                .build()
         }
     }
 }

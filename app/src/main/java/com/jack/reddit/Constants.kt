@@ -19,5 +19,5 @@ package com.jack.reddit
 /**
  * Constants used throughout the app.
  */
-const val DATABASE_NAME = "database-db"
-const val REDIT_DATA_FILENAME = "data.json"
+const val DATABASE_NAME = "app-db"
+const val DATA_FILENAME = "data.json"

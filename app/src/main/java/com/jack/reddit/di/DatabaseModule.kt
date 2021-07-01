@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.sunflower.di
+package com.jack.reddit.di
 
 import android.content.Context
 import com.jack.reddit.data.AppDatabase
@@ -38,6 +38,6 @@ class DatabaseModule {
 
     @Provides
     fun provideRedditDao(appDatabase: AppDatabase): RedditDao {
-        return appDatabase.plantDao()
+        return appDatabase.redditDao()
     }
 }

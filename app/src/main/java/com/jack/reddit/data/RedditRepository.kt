@@ -28,7 +28,7 @@ import javax.inject.Singleton
 @Singleton
 class RedditRepository @Inject constructor(private val redditDao: RedditDao) {
 
-    fun getList() = redditDao.getReddits()
+    fun getReddits() = redditDao.getReddits()
 
-    fun get(redditId: String) = redditDao.getReddit(redditId)
+    fun getReddit(redditId: String) = redditDao.getReddit(redditId)
 }

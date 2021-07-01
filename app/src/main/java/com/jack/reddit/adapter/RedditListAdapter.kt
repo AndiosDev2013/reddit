@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Google LLC
+ * Copyright 2020 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,25 +14,28 @@
  * limitations under the License.
  */
 
-package com.jack.reddit.adapter
+package com.jack.reddit.adapters
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.findNavController
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.jack.reddit.RedditListFragment
-import com.jack.reddit.data.Reddit
+import com.jack.reddit.RedditListFragmentDirections
+import com.jack.reddit.adapters.RedditListAdapter.RedditListViewHolder
 import com.jack.reddit.databinding.ListItemRedditBinding
+import com.jack.reddit.data.Reddit
 
 /**
  * Adapter for the [RecyclerView] in [RedditListFragment].
  */
-class RedditAdapter : ListAdapter<Reddit, RecyclerView.ViewHolder>(PlantDiffCallback()) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return PlantViewHolder(
+class RedditListAdapter : PagingDataAdapter<Reddit, RedditListViewHolder>(DiffCallback()) {
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RedditListViewHolder {
+        return RedditListViewHolder(
             ListItemRedditBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
@@ -41,26 +44,23 @@ class RedditAdapter : ListAdapter<Reddit, RecyclerView.ViewHolder>(PlantDiffCall
         )
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val reddit = getItem(position)
-        (holder as PlantViewHolder).bind(reddit)
+    override fun onBindViewHolder(holder: RedditListViewHolder, position: Int) {
+        val photo = getItem(position)
+        if (photo != null) {
+            holder.bind(photo)
+        }
     }
 
-    class PlantViewHolder(
+    class RedditListViewHolder(
         private val binding: ListItemRedditBinding
     ) : RecyclerView.ViewHolder(binding.root) {
         init {
-            binding.setClickListener {
+            binding.setClickListener { view ->
                 binding.reddit?.let { reddit ->
-                    navigateToReddit(reddit, it)
+                    val action = RedditListFragmentDirections.actionRedditListToDetail(reddit.redditId)
+                    view.findNavController().navigate(action)
                 }
             }
-        }
-
-        private fun navigateToReddit(reddit: Reddit, view: View
-        ) {
-            //val direction = HomeViewPagerFragmentDirections.actionViewPagerFragmentToPlantDetailFragment(reddit.subreddit_id)
-            //view.findNavController().navigate(direction)
         }
 
         fun bind(item: Reddit) {
@@ -72,8 +72,7 @@ class RedditAdapter : ListAdapter<Reddit, RecyclerView.ViewHolder>(PlantDiffCall
     }
 }
 
-private class PlantDiffCallback : DiffUtil.ItemCallback<Reddit>() {
-
+private class DiffCallback : DiffUtil.ItemCallback<Reddit>() {
     override fun areItemsTheSame(oldItem: Reddit, newItem: Reddit): Boolean {
         return oldItem.redditId == newItem.redditId
     }
