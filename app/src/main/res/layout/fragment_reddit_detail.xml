@@ -69,30 +69,49 @@
 
                 <TextView
                     android:id="@+id/txt_title"
+                    renderHtml="@{viewModel.reddit.title}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_horizontal"
-                    android:text="@{viewModel.reddit.title}"
                     android:textAppearance="?attr/textAppearanceHeadline5"
                     tools:text="Title" />
 
-                <TextView
-                    android:id="@+id/txt_author"
-                    android:layout_width="match_parent"
+                <LinearLayout
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    android:text="@{viewModel.reddit.author_fullname}"
-                    android:textColor="?attr/colorPrimary"
-                    android:textStyle="bold"
-                    tools:text="Author" />
+                    android:layout_gravity="center_horizontal">
+
+                    <TextView
+                        android:id="@+id/txt_author"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="@dimen/margin_normal"
+                        android:gravity="center_horizontal"
+                        android:text="@{viewModel.reddit.author_fullname}"
+                        android:textColor="?attr/colorPrimary"
+                        android:textStyle="bold"
+                        tools:text="Author" />
+
+                    <TextView
+                        android:id="@+id/txt_time"
+                        renderDate="@{viewModel.reddit.created_utc}"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:textColor="@color/purple_200"
+                        android:textStyle="bold"
+                        tools:text="Time" />
+                </LinearLayout>
+
 
                 <TextView
                     android:id="@+id/txt_content"
+                    renderHtml="@{viewModel.reddit.selftext_html}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/margin_small"
+                    android:layout_marginTop="@dimen/margin_normal"
                     android:layout_marginEnd="@dimen/margin_small"
-                    renderHtml="@{viewModel.reddit.selftext_html}"
                     tools:text="htmlContent" />
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>

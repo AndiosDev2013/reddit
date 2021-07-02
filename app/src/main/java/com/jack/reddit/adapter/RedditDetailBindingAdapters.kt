@@ -26,6 +26,8 @@ import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import java.text.SimpleDateFormat
+import java.util.*
 
 @BindingAdapter("imageFromUrl")
 fun bindImageFromUrl(view: ImageView, imageUrl: String?) {
@@ -52,6 +54,20 @@ fun bindRenderHtml(view: TextView, description: String?) {
         val code: String = Html.fromHtml(description).toString()
         view.text = Html.fromHtml(code)
         view.movementMethod = LinkMovementMethod.getInstance()
+    } else {
+        view.text = ""
+    }
+}
+
+@BindingAdapter("renderDate")
+fun bindRenderDate(view: TextView, utcTime: Long?) {
+    if (utcTime != null) {
+        val cal = Calendar.getInstance()
+        cal.timeInMillis = utcTime * 1000
+
+        val format = SimpleDateFormat("dd/MM/yyyy HH:mm:ss")
+        val text = format.format(cal.time)
+        view.text = text
     } else {
         view.text = ""
     }
