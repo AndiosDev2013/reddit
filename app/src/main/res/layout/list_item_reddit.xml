@@ -14,7 +14,8 @@
   ~ limitations under the License.
   -->
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -40,7 +41,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="150dp"
+            android:layout_height="160dp"
             android:orientation="vertical"
             android:padding="@dimen/margin_normal">
 
@@ -49,24 +50,31 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/margin_extra_small"
-                android:text="Title"
+                android:maxLines="1"
+                android:text="@{reddit.title}"
                 android:textColor="@color/black"
-                android:textSize="20sp"
-                android:textStyle="bold" />
+                android:textSize="14sp"
+                android:textStyle="bold"
+                tools:text="Title" />
 
             <TextView
                 android:id="@+id/txt_author"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Author"
-                android:textColor="@color/purple_700" />
+                android:maxLines="1"
+                android:text="@{reddit.author_fullname}"
+                android:textColor="@color/purple_700"
+                android:textSize="12sp"
+                tools:text="Author" />
 
             <TextView
                 android:id="@+id/txt_content"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged." />
+                android:text="@{reddit.selftext}"
+                android:textSize="12sp"
+                tools:text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged." />
 
         </LinearLayout>
 

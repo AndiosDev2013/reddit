@@ -16,6 +16,7 @@
 
 package com.jack.reddit.adapters
 
+import android.text.Html
 import android.text.method.LinkMovementMethod
 import android.widget.ImageView
 import android.widget.TextView
@@ -48,7 +49,8 @@ fun bindIsFabGone(view: FloatingActionButton, isGone: Boolean?) {
 @BindingAdapter("renderHtml")
 fun bindRenderHtml(view: TextView, description: String?) {
     if (description != null) {
-        view.text = HtmlCompat.fromHtml(description, FROM_HTML_MODE_COMPACT)
+        val code: String = Html.fromHtml(description).toString()
+        view.text = Html.fromHtml(code)
         view.movementMethod = LinkMovementMethod.getInstance()
     } else {
         view.text = ""

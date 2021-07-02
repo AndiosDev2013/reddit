@@ -72,17 +72,19 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_horizontal"
-                    android:text="@{viewModel.reddit.name}"
+                    android:text="@{viewModel.reddit.title}"
                     android:textAppearance="?attr/textAppearanceHeadline5"
                     tools:text="Title" />
 
                 <TextView
                     android:id="@+id/txt_author"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_horizontal"
-                    android:textColor="?attr/colorAccent"
-                    android:textStyle="bold" />
+                    android:text="@{viewModel.reddit.author_fullname}"
+                    android:textColor="?attr/colorPrimary"
+                    android:textStyle="bold"
+                    tools:text="Author" />
 
                 <TextView
                     android:id="@+id/txt_content"
@@ -90,7 +92,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/margin_small"
                     android:layout_marginEnd="@dimen/margin_small"
-                    tools:text="content" />
+                    renderHtml="@{viewModel.reddit.selftext_html}"
+                    tools:text="htmlContent" />
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

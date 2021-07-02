@@ -45,9 +45,9 @@ class RedditListAdapter : PagingDataAdapter<Reddit, RedditListViewHolder>(DiffCa
     }
 
     override fun onBindViewHolder(holder: RedditListViewHolder, position: Int) {
-        val photo = getItem(position)
-        if (photo != null) {
-            holder.bind(photo)
+        val reddit = getItem(position)
+        if (reddit != null) {
+            holder.bind(reddit)
         }
     }
 

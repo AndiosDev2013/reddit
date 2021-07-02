@@ -18,11 +18,16 @@ package com.jack.reddit.data
 
 import androidx.paging.PagingSource
 import com.jack.reddit.api.ApiService
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import java.util.*
 
 private const val STARTING_PAGE_INDEX = 1
 
 class ApiPagingSource(
-    private val service: ApiService
+    private val service: ApiService,
+    private val redditRepository: RedditRepository
 ) : PagingSource<Int, Reddit>() {
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Reddit> {
@@ -33,6 +38,10 @@ class ApiPagingSource(
             for (i in 0 until response.data.children.size) {
                 val item = response.data.children[i].data
                 data.add(item)
+            }
+
+            GlobalScope.launch {
+                redditRepository.insertReddits(data)
             }
 
             LoadResult.Page(

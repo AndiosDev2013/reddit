@@ -23,31 +23,24 @@ import com.google.gson.annotations.SerializedName
 
 @Entity(tableName = "reddits")
 data class Reddit(
-    @field:SerializedName("subreddit_id")
+    @field:SerializedName("name")
     @PrimaryKey
     @ColumnInfo(name = "id")
     val redditId: String,
 
-    @field:SerializedName("approved_at_utc")
-    val approved_at_utc: String = "",
-    @field:SerializedName("subreddit")
-    val subreddit: String = "",
-    @field:SerializedName("selftext")
-    val selftext: String = "",
     @field:SerializedName("title")
     val title: String = "",
-    @field:SerializedName("name")
-    val name: String = "",
-    @field:SerializedName("upvote_ratio")
-    val upvote_ratio: Double = 0.0,
-    @field:SerializedName("ups")
-    val ups: Int = 0,
-    @field:SerializedName("total_awards_received")
-    val total_awards_received: Int = 0,
+
+    @field:SerializedName("author_fullname")
+    val author_fullname: String = "",
+
+    @field:SerializedName("selftext")
+    val selftext: String = "",
     @field:SerializedName("selftext_html")
-    val selftext_html: String = "",
-    @field:SerializedName("permalink")
-    val permalink: String = ""
+    val selftext_html: String?,
+
+    @field:SerializedName("created_utc")
+    val created_utc: Long,
 ) {
-    override fun toString() = name
+    override fun toString() = selftext
 }

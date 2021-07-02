@@ -16,6 +16,7 @@
 
 package com.jack.reddit.data
 
+import java.util.*
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -31,4 +32,6 @@ class RedditRepository @Inject constructor(private val redditDao: RedditDao) {
     fun getReddits() = redditDao.getReddits()
 
     fun getReddit(redditId: String) = redditDao.getReddit(redditId)
+
+    fun insertReddits(reddits: List<Reddit>) = redditDao.insertAll(reddits)
 }

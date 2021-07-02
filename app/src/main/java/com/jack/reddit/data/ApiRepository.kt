@@ -23,12 +23,15 @@ import com.jack.reddit.api.ApiService
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class ApiRepository @Inject constructor(private val service: ApiService) {
+class ApiRepository @Inject constructor(
+    private val service: ApiService,
+    private val redditRepository: RedditRepository
+    ) {
 
     fun getResultStream(): Flow<PagingData<Reddit>> {
         return Pager(
             config = PagingConfig(enablePlaceholders = false, pageSize = NETWORK_PAGE_SIZE),
-            pagingSourceFactory = { ApiPagingSource(service) }
+            pagingSourceFactory = { ApiPagingSource(service, redditRepository) }
         ).flow
     }
 
